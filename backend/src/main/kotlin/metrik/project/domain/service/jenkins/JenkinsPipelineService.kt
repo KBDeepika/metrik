@@ -1,11 +1,7 @@
 package metrik.project.domain.service.jenkins
 
-import metrik.project.domain.model.Build
-import metrik.project.domain.model.Commit
-import metrik.project.domain.model.Stage
-import metrik.project.domain.model.Status
+import metrik.project.domain.model.*
 import metrik.project.exception.PipelineConfigVerifyException
-import metrik.project.domain.model.Pipeline
 import metrik.project.domain.repository.BuildRepository
 import metrik.project.domain.service.PipelineService
 import metrik.project.domain.service.jenkins.dto.BuildDetailsDTO
@@ -14,10 +10,7 @@ import metrik.project.domain.service.jenkins.dto.BuildSummaryDTO
 import metrik.project.rest.vo.response.SyncProgress
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.http.HttpEntity
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpMethod
-import org.springframework.http.ResponseEntity
+import org.springframework.http.*
 import org.springframework.stereotype.Service
 import org.springframework.web.client.HttpClientErrorException
 import org.springframework.web.client.HttpServerErrorException
@@ -69,7 +62,7 @@ class JenkinsPipelineService(
     }
 
     override fun syncBuildsProgressively(pipeline: Pipeline, emitCb: (SyncProgress) -> Unit): List<Build> {
-        logger.info("Started data sync for Jenkins pipeline [$pipeline.id]")
+        logger.info("Started data sync for Jenkins pipeline ${pipeline.id}")
         val progressCounter = AtomicInteger(0)
 
         val buildsNeedToSync = getBuildSummariesFromJenkins(pipeline.username!!, pipeline.credential, pipeline.url)
@@ -81,11 +74,15 @@ class JenkinsPipelineService(
             .toList()
 
         logger.info(
-            "For Jenkins pipeline [${pipeline.id}] - found [${buildsNeedToSync.size}] builds need to be synced"
+                "For Jenkins pipeline [${pipeline.id}] - found [${buildsNeedToSync.size}] builds need to be synced"
         )
+
         val builds = buildsNeedToSync.parallelStream().map { buildSummary ->
             val buildDetails =
                 getBuildDetailsFromJenkins(pipeline.username!!, pipeline.credential, pipeline.url, buildSummary)
+
+            val count = getBuildCoverityCount(pipeline.username!!, pipeline.credential, buildSummary.url)
+            val coverageDetails = getBuildCoverageDetails(pipeline.username!!, pipeline.credential, buildSummary.url)
 
             val convertedBuild = Build(
                 pipeline.id,
@@ -95,7 +92,9 @@ class JenkinsPipelineService(
                 buildSummary.timestamp,
                 buildSummary.url,
                 constructBuildStages(buildDetails),
-                constructBuildCommits(buildSummary).flatten()
+                constructBuildCommits(buildSummary).flatten(),
+                count,
+                coverageDetails
             )
 
             emitCb(
@@ -115,7 +114,49 @@ class JenkinsPipelineService(
         logger.info(
             "For Jenkins pipeline [${pipeline.id}] - Successfully synced [${buildsNeedToSync.size}] builds"
         )
+
         return builds
+    }
+
+    private fun getBuildCoverityCount(username: String, credential: String, url: String) : String {
+        val urlToGet = "${url}/artifact/coverity_error_count.txt/*view*/"
+        return getTheDetailsUsingGivenLinkAndHeader(username, credential, urlToGet)
+    }
+
+    private fun getBuildCoverageDetails(username: String, credential: String, url: String) : String {
+        val urlToGet = "${url}/cobertura/api/json?depth=3"
+        return getTheDetailsUsingGivenLinkAndHeader(username, credential, urlToGet)
+    }
+
+    private fun getTheDetailsUsingGivenLinkAndHeader(username: String, credential: String, url: String) : String {
+        val headers = setAuthHeader(username, credential)
+        val entity = HttpEntity<String>("", headers)
+        val response : ResponseEntity<String>
+        try {
+            response = restTemplate.exchange(
+                    url, HttpMethod.GET, entity
+            )
+            if (!response.statusCode.is2xxSuccessful) {
+                logger.error(
+                        """
+                    Failed to get details for [${url}]
+                    statusCode: ${response.statusCode}
+                    responseBody: ${response.body}          
+                """.trimIndent()
+                )
+                throw PipelineConfigVerifyException(response.body!!.toString())
+            }
+        }
+        catch (ex: HttpServerErrorException) {
+            throw PipelineConfigVerifyException("Verify website unavailable")
+        } catch (ex: HttpClientErrorException) {
+            if(ex.statusCode == HttpStatus.NOT_FOUND){
+                return "";
+            }
+            throw PipelineConfigVerifyException("Verify failed")
+        }
+        logger.info(response.body)
+        return response.body!!.trim()
     }
 
     private fun constructBuildCommits(buildSummary: BuildSummaryDTO): List<List<Commit>> {

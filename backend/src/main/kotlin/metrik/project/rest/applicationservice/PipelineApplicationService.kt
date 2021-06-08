@@ -22,7 +22,7 @@ class PipelineApplicationService(
     private var logger = LoggerFactory.getLogger(this.javaClass.name)
 
     fun verifyPipelineConfiguration(pipeline: Pipeline) {
-        logger.info("Started verification for pipeline [$pipeline]")
+        logger.info("Started verification for pipeline ${pipeline.id}")
 
         pipelineServiceFactory.getService(pipeline.type).verifyPipelineConfiguration(pipeline)
     }

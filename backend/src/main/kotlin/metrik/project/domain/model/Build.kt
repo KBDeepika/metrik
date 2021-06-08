@@ -37,7 +37,9 @@ data class Build(
     val timestamp: Long = 0,
     val url: String = Strings.EMPTY,
     val stages: List<Stage> = emptyList(),
-    val changeSets: List<Commit> = emptyList()
+    val changeSets: List<Commit> = emptyList(),
+    val coverityCount : String = Strings.EMPTY,
+    val coverageDetails : String = Strings.EMPTY
 ) {
 
     fun containsGivenDeploymentInGivenTimeRange(
@@ -51,7 +53,6 @@ data class Build(
                     && it.status == status
                     && it.getStageDoneTime() in startTimestamp..endTimestamp
         }
-
     }
 
     fun containsGivenDeploymentBeforeGivenTimestamp(
