@@ -2,11 +2,7 @@ package metrik.metrics.rest
 
 import metrik.metrics.domain.model.MetricsUnit
 import org.springframework.stereotype.Component
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.YearMonth
-import java.time.ZoneId
+import java.time.*
 import java.util.*
 
 @Component
@@ -28,6 +24,7 @@ class TimeRangeSplitter {
         return when (unit) {
             MetricsUnit.Monthly -> splitTimeRangeMonthly(startTimestamp, endTimestamp)
             MetricsUnit.Fortnightly -> splitTimeRangeFortnightly(startTimestamp, endTimestamp)
+            MetricsUnit.Daily -> splitTimeRangeDaily(startTimestamp, endTimestamp)
         }
 
     }
@@ -71,6 +68,24 @@ class TimeRangeSplitter {
         return timeRanges.asReversed().toList()
     }
 
+    private fun splitTimeRangeDaily(
+         startTimestamp: Long,
+         endTimestamp: Long
+    ): List<Pair<Long, Long>> {
+        val startTime = getLocalDateTimeFromTimestampMillis(startTimestamp)
+        val endTime = getLocalDateTimeFromTimestampMillis(endTimestamp)
+        val timeRanges = mutableListOf<Pair<Long, Long>>()
+
+        var tempEndTime = endTime
+        var tempStartTime = tempEndTime.atStartOfDay()
+
+        while (tempStartTime.isAfter(startTime)) {
+            timeRanges.add(Pair(tempStartTime.toDefaultZoneEpochMill(), tempEndTime.toDefaultZoneEpochMill()))
+            tempEndTime = tempStartTime.minusNanos(1)
+            tempStartTime = tempEndTime.atStartOfDay()
+        }
+        return timeRanges.asReversed().toList()
+    }
 }
 
 fun LocalDateTime.toDefaultZoneEpochMill(): Long {

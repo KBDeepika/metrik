@@ -10,7 +10,9 @@ import { MetricTooltip } from "./components/MetricTooltip";
 import { calcMaxValueWithRatio } from "../../utils/calcMaxValueWithRatio/calcMaxValueWithRatio";
 import { cleanMetricsInfo } from "../../utils/metricsDataUtils/metricsDataUtils";
 import { FourKeyMetrics, getFourKeyMetricsUsingPost } from "../../clients/metricsApis";
-import { MetricsInfo, MetricsLevel, MetricsUnit } from "../../models/metrics";
+import { CoverageMetrics, MetricsInfo, MetricsLevel, MetricsUnit } from "../../models/metrics";
+import { CoverageMetricTooltip } from "./components/CoverageTooltip";
+import { CoverageMetricsCard } from "./components/CoverageMerticsCard";
 
 const metricsContainerStyles = css({
 	padding: "37px 35px",
@@ -27,6 +29,18 @@ const initialMetricsState: MetricsInfo = {
 	details: [],
 };
 
+const initialCoverageMetricsState: CoverageMetrics[] = [
+	{
+		packagesValue: 0,
+		filesValue: 0,
+		classesValue: 0,
+		linesValue: 0,
+		conditionalsValue: 0,
+		startTimestamp: 0,
+		endTimestamp: 0,
+	}
+];
+
 const domainMaximizeRatio = 1.1;
 
 export const PageDashboard = () => {
@@ -38,6 +52,9 @@ export const PageDashboard = () => {
 	const [deploymentFrequency, setDeploymentFrequency] = useState<MetricsInfo>(initialMetricsState);
 	const [leadTimeForChange, setLeadTimeForChange] = useState<MetricsInfo>(initialMetricsState);
 	const [meanTimeToRestore, setMeanTimeToRestore] = useState<MetricsInfo>(initialMetricsState);
+	const [coverageReport, setCoverageReport] = useState<CoverageMetrics[]>(
+		initialCoverageMetricsState
+	);
 	const [loadingChart, setLoadingChart] = useState(false);
 	const defaultMetricsData = {
 		summary: {
@@ -54,11 +71,24 @@ export const PageDashboard = () => {
 			},
 		],
 	};
+	const defaultCoverageMetricsData = [
+		{
+			packagesValue: 0,
+			filesValue: 0,
+			classesValue: 0,
+			linesValue: 0,
+			conditionalsValue: 0,
+			startTimestamp: 0,
+			endTimestamp: 0,
+		},
+	];
+
 	const [metricsResponse, setMetricsResponse] = useState<FourKeyMetrics>({
 		changeFailureRate: defaultMetricsData,
 		deploymentFrequency: defaultMetricsData,
 		leadTimeForChange: defaultMetricsData,
 		meanTimeToRestore: defaultMetricsData,
+		coverageReport: defaultCoverageMetricsData,
 	});
 
 	const getFourKeyMetrics = (formValues: FormValues) => {
@@ -68,13 +98,13 @@ export const PageDashboard = () => {
 		const durationTimestamps = getDurationTimestamps(formValues.duration);
 		getFourKeyMetricsUsingPost({
 			metricsQuery: {
-				startTime: durationTimestamps.startTimestamp!,
-				endTime: durationTimestamps.endTimestamp!,
 				pipelineStages: (formValues.pipelines || []).map(i => ({
 					pipelineId: i.value,
 					stage: i.childValue,
 				})),
 				unit: formValues.unit,
+				startTime: durationTimestamps.startTimestamp!,
+				endTime: durationTimestamps.endTimestamp!,
 			},
 		})
 			.then(response => {
@@ -83,6 +113,7 @@ export const PageDashboard = () => {
 				setDeploymentFrequency(cleanMetricsInfo(response.deploymentFrequency));
 				setLeadTimeForChange(cleanMetricsInfo(response.leadTimeForChange));
 				setMeanTimeToRestore(cleanMetricsInfo(response.meanTimeToRestore));
+				setCoverageReport(response.coverageReport);
 			})
 			.finally(() => {
 				setLoadingChart(false);
@@ -164,6 +195,18 @@ export const PageDashboard = () => {
 							loading={loadingChart}
 							subTitleUnit="Percentage"
 							yAxisDomain={[0, calcMaxValueWithRatio(changeFailureRate.details, 100, 1)]}
+						/>
+					</Col>
+
+					<Col xs={24} sm={24} md={24} lg={12}>
+						<CoverageMetricsCard
+							title="Coverage Report"
+							info={<CoverageMetricTooltip type={"cr"} />}
+							data={coverageReport}
+							yaxisFormatter={(value: string) => value + "%"}
+							yAxisLabel="Percentage"
+							loading={loadingChart}
+							yAxisDomain={[0, 100]}
 						/>
 					</Col>
 				</Row>

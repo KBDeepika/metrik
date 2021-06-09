@@ -1,5 +1,5 @@
 package metrik.metrics.domain.model
 
 enum class MetricsUnit{
-    Fortnightly, Monthly
+    Fortnightly, Monthly, Daily
 }

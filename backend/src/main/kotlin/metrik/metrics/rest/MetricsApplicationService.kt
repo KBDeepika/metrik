@@ -1,10 +1,7 @@
 package metrik.metrics.rest
 
-import metrik.metrics.domain.calculator.ChangeFailureRateCalculator
-import metrik.metrics.domain.calculator.DeploymentFrequencyCalculator
-import metrik.metrics.domain.calculator.LeadTimeForChangeCalculator
-import metrik.metrics.domain.calculator.MeanTimeToRestoreCalculator
-import metrik.metrics.domain.calculator.MetricsCalculator
+import metrik.metrics.domain.calculator.*
+import metrik.metrics.domain.model.CoverageMetrics
 import metrik.metrics.domain.model.Metrics
 import metrik.metrics.domain.model.MetricsUnit
 import metrik.metrics.exception.BadRequestException
@@ -92,6 +89,12 @@ class MetricsApplicationService {
                 pipelineStageMap,
                 timeRangeByUnit,
                 changeFailureRateCalculator,
+            ),
+            generateCoverageReportMetrics(
+                 allBuilds,
+                 startTimestamp,
+                 endTimestamp,
+                 CoverageReportCalculator()
             )
         )
     }
@@ -157,6 +160,20 @@ class MetricsApplicationService {
                 Metrics(valueForUnitRange, it.first, it.second)
             }
         return MetricsInfo(summary, details)
+    }
+
+    private fun generateCoverageReportMetrics(
+         allBuilds: List<Build>,
+         startTimeMillis: Long,
+         endTimeMillis: Long,
+         calculator: CoverageReportCalculator
+    ): List<CoverageMetrics> {
+
+        val timeRangeByUnit: List<Pair<Long, Long>> = timeRangeSplitter.split(startTimeMillis, endTimeMillis, MetricsUnit.Daily)
+
+        return timeRangeByUnit.map{ time ->
+            calculator.calculateValue(allBuilds, time.first, time.second)
+        }.filter { coverageMetrics -> coverageMetrics.packagesValue > 0.0 }
     }
 
     private fun getDuration(startTimestamp: Long, endTimestamp: Long): Int {

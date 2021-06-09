@@ -1,8 +1,8 @@
 package metrik.metrics.domain.calculator
 
+import metrik.metrics.domain.model.LEVEL
 import metrik.project.domain.model.Build
 import metrik.project.domain.model.Status
-import metrik.metrics.domain.model.LEVEL
 import org.springframework.stereotype.Component
 
 @Component
@@ -33,14 +33,16 @@ class LeadTimeForChangeCalculator : MetricsCalculator {
         val lastSuccessfulDeploymentBuild = buildOrderByTimestampAscending.findLast {
             it.containsGivenDeploymentInGivenTimeRange(
                 targetStage,
-                Status.SUCCESS, startTimestamp,
+                Status.SUCCESS,
+                startTimestamp,
                 endTimestamp
             )
         } ?: return emptyList()
         val firstSuccessfulDeploymentBuild = buildOrderByTimestampAscending.findLast {
             it.containsGivenDeploymentBeforeGivenTimestamp(
                 targetStage,
-                Status.SUCCESS, startTimestamp
+                Status.SUCCESS,
+                startTimestamp
             )
         }
         val buildsInScope = filterBuildsBetweenGivenRange(

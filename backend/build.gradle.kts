@@ -68,6 +68,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.1")
     implementation("org.springframework.cloud:spring-cloud-starter-sleuth")
+    implementation("com.beust:klaxon:5.5")
 
     configurations.compile {
         exclude("org.springframework.boot", "spring-boot-starter-logging")

@@ -1,12 +1,12 @@
 package metrik.project.domain.service.jenkins
 
 import metrik.project.domain.model.*
-import metrik.project.exception.PipelineConfigVerifyException
 import metrik.project.domain.repository.BuildRepository
 import metrik.project.domain.service.PipelineService
 import metrik.project.domain.service.jenkins.dto.BuildDetailsDTO
 import metrik.project.domain.service.jenkins.dto.BuildSummaryCollectionDTO
 import metrik.project.domain.service.jenkins.dto.BuildSummaryDTO
+import metrik.project.exception.PipelineConfigVerifyException
 import metrik.project.rest.vo.response.SyncProgress
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -77,7 +77,7 @@ class JenkinsPipelineService(
                 "For Jenkins pipeline [${pipeline.id}] - found [${buildsNeedToSync.size}] builds need to be synced"
         )
 
-        val builds = buildsNeedToSync.parallelStream().map { buildSummary ->
+        val builds = buildsNeedToSync.map { buildSummary ->
             val buildDetails =
                 getBuildDetailsFromJenkins(pipeline.username!!, pipeline.credential, pipeline.url, buildSummary)
 

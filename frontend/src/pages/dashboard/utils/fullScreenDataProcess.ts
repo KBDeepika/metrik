@@ -10,6 +10,7 @@ export const mapMetricsList = (metricsResponse: FourKeyMetrics, samplingInterval
 	const leadTimeForChange = cleanMetricsInfo(metricsResponse.leadTimeForChange);
 	const meanTimeToRestore = cleanMetricsInfo(metricsResponse.meanTimeToRestore);
 	const changeFailureRate = cleanMetricsInfo(metricsResponse.changeFailureRate);
+	const coverageReport = metricsResponse.coverageReport;
 	return [
 		{
 			metricsSummaryData: deploymentFrequency.summary.value,
@@ -39,6 +40,7 @@ export const mapMetricsList = (metricsResponse: FourKeyMetrics, samplingInterval
 			metricsText: MetricsType.CHANGE_FAILURE_RATE,
 			data: addBaseValueToDetailData(changeFailureRate.details),
 		},
+		coverageReport,
 	];
 };
 

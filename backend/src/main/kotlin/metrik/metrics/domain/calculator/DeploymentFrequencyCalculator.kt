@@ -1,8 +1,8 @@
 package metrik.metrics.domain.calculator
 
+import metrik.metrics.domain.model.LEVEL
 import metrik.project.domain.model.Build
 import metrik.project.domain.model.Status
-import metrik.metrics.domain.model.LEVEL
 import org.springframework.stereotype.Component
 
 @Component
@@ -64,6 +64,4 @@ class DeploymentFrequencyCalculator : MetricsCalculator {
 
         return deploymentFinishTimestamp in startTimestamp..endTimestamp
     }
-
-
 }
