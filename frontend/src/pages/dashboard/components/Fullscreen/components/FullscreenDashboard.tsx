@@ -73,6 +73,7 @@ const FullscreenDashboard = ({
 	pipelineList,
 	isFullscreenVisible,
 }: FullscreenDashboardProps) => {
+	metricsList.pop()
 	const content = (
 		<section css={pageStyle}>
 			<section css={pageContentStyle}>

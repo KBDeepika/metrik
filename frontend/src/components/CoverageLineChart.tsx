@@ -11,13 +11,11 @@ import {
 import {
 	BLUE_5,
 	GRAY_1,
-	GRAY_12,
-	GRAY_13,
 	GRAY_5,
-	GRAY_7,
+	GRAY_6,
 	GRAY_9,
-	GREEN_DARK, GREEN_LIGHT,
-	ORANGE_DARK, ORANGE_LIGHT,
+	GREEN_LIGHT,
+	ORANGE_LIGHT,
 	RED_LIGHT,
 } from "../constants/styles";
 import { css } from "@emotion/react";
@@ -61,12 +59,31 @@ const yAxisStyles = css({
 	zIndex: 1000,
 });
 
+const CoverageInfoLabel = css({
+	marginLeft: "10px",
+	marginTop: "-5px",
+});
+
+const CoverageInfoIndicator = css({
+	display: "inline-block",
+	width: "24px",
+	height: "15px",
+	verticalAlign: "middle",
+});
+
+const CoverageInfoWrapper = css({
+	display: "flex",
+	justifyContent: "space-evenly",
+	marginTop: "2%",
+});
+
 const tooltipLabelFormatter = (data: CoverageMetrics[]) => {
 	return (labelContent: number) => {
 		const currentDataPoint = find(data, item => item.startTimestamp === labelContent);
 		if (!currentDataPoint) {
 			return "N/A";
 		}
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { startTime, endTime } = durationFormatter(
 			currentDataPoint.startTimestamp,
 			currentDataPoint.endTimestamp
@@ -76,10 +93,11 @@ const tooltipLabelFormatter = (data: CoverageMetrics[]) => {
 };
 
 const tooltipValueFormatterBuilder = (yaxisFormatter: (value: string) => string) => (
-	value: string
-): any => {
+	value: string,
+	name: string,
+): string[] => {
 	const formattedValue = yaxisFormatter(value);
-	return [formattedValue, "Value"];
+	return [formattedValue, name.replace("Value", "")];
 };
 
 export const CoverageLineChart: FC<LineChartProps> = ({
@@ -170,7 +188,7 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 						<Line
 							connectNulls
-							activeDot={{ fill: GRAY_9, r: 6 }}
+							activeDot={{ fill: RED_LIGHT, r: 6 }}
 							type="monotone"
 							dataKey="packagesValue"
 							stroke={RED_LIGHT}
@@ -188,7 +206,7 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 						<Line
 							connectNulls
-							activeDot={{ fill: GRAY_9, r: 6 }}
+							activeDot={{ fill: ORANGE_LIGHT, r: 6 }}
 							type="monotone"
 							dataKey="filesValue"
 							stroke={ORANGE_LIGHT}
@@ -206,7 +224,7 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 						<Line
 							connectNulls
-							activeDot={{ fill: GRAY_9, r: 6 }}
+							activeDot={{ fill: GREEN_LIGHT, r: 6 }}
 							type="monotone"
 							dataKey="classesValue"
 							stroke={GREEN_LIGHT}
@@ -224,7 +242,7 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 						<Line
 							connectNulls
-							activeDot={{ fill: GRAY_9, r: 6 }}
+							activeDot={{ fill: BLUE_5, r: 6 }}
 							type="monotone"
 							dataKey="linesValue"
 							stroke={BLUE_5}
@@ -242,10 +260,10 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 						<Line
 							connectNulls
-							activeDot={{ fill: GRAY_9, r: 6 }}
+							activeDot={{ fill: GRAY_6, r: 6 }}
 							type="monotone"
 							dataKey="conditionalsValue"
-							stroke={GRAY_13}
+							stroke={GRAY_6}
 							strokeWidth={2}
 							fill={GRAY_1}
 							isAnimationActive={false}
@@ -270,6 +288,53 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 					</RechartsLineChart>
 				</ResponsiveContainer>
+			</div>
+			<div css={CoverageInfoWrapper}>
+				<div>
+					<span
+						css={CoverageInfoIndicator}
+						style={{
+							backgroundColor: RED_LIGHT,
+						}}
+					/>
+					<span css={CoverageInfoLabel}>Packages</span>
+				</div>
+				<div>
+					<span
+						css={CoverageInfoIndicator}
+						style={{
+							backgroundColor: ORANGE_LIGHT,
+						}}
+					/>
+					<span css={CoverageInfoLabel}>Files</span>
+				</div>
+				<div>
+					<span
+						css={CoverageInfoIndicator}
+						style={{
+							backgroundColor: GREEN_LIGHT,
+						}}
+					/>
+					<span css={CoverageInfoLabel}>Classes</span>
+				</div>
+				<div>
+					<span
+						css={CoverageInfoIndicator}
+						style={{
+							backgroundColor: BLUE_5,
+						}}
+					/>
+					<span css={CoverageInfoLabel}>Lines</span>
+				</div>
+				<div>
+					<span
+						css={CoverageInfoIndicator}
+						style={{
+							backgroundColor: GRAY_6,
+						}}
+					/>
+					<span css={CoverageInfoLabel}>Conditionals</span>
+				</div>
 			</div>
 		</div>
 	);

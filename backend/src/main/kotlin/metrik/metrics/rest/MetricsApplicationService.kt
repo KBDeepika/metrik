@@ -171,7 +171,7 @@ class MetricsApplicationService {
 
         val timeRangeByUnit: List<Pair<Long, Long>> = timeRangeSplitter.split(startTimeMillis, endTimeMillis, MetricsUnit.Daily)
 
-        return timeRangeByUnit.map{ time ->
+        return timeRangeByUnit.map { time ->
             calculator.calculateValue(allBuilds, time.first, time.second)
         }.filter { coverageMetrics -> coverageMetrics.packagesValue > 0.0 }
     }
