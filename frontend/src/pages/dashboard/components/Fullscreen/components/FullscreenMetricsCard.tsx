@@ -12,11 +12,6 @@ import {
 } from "../../../../../constants/styles";
 import { Metrics, MetricsLevel, MetricsType } from "../../../../../models/metrics";
 
-export interface ChartData {
-	name: string;
-	uv: number;
-	pv: number;
-}
 export interface FullscreenMetricsCardOptions extends React.HTMLAttributes<HTMLDivElement> {
 	metricsText: MetricsType;
 	metricsLevel: MetricsLevel;
@@ -51,7 +46,7 @@ export const MetricsLevelConfig: MetricsLevelBaseConfig = {
 };
 const cardStyle = {
 	width: "49%",
-	height: "44vh",
+	height: "32vh",
 	backgroundColor: GRAY_11,
 	color: "white",
 	position: "relative" as const,
@@ -103,7 +98,7 @@ const FullscreenMetricsCard = ({
 					data={data}
 					dataKey={"value"}
 					width={"100%"}
-					height={"17%"}
+					height={"25%"}
 					strokeColor={metricsLevelIndicationColor}
 					strokeWidth={5}
 					areaGradientColor={"RGBA(155, 155, 155, 1)"}

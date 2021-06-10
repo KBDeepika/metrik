@@ -9,6 +9,8 @@ import MetricsLegend from "./MetricsLegend";
 import { GRAY_1, GRAY_9 } from "../../../../../constants/styles";
 import Logo from "../../../../../components/Logo/Logo";
 import { Modal } from "antd";
+import FullscreenCoverageMetricsCard from "./FullscreenCoverageMetricsCard";
+import {CoverageMetrics} from "../../../../../models/metrics";
 
 interface FullscreenDashboardProps {
 	projectName: string;
@@ -25,7 +27,7 @@ const pageContentStyle = {
 	justifyContent: "space-between",
 };
 const chartSectionStyle = {
-	width: "70%",
+	width: "75%",
 	height: "100%",
 	display: "flex",
 	flexWrap: "wrap" as const,
@@ -73,7 +75,7 @@ const FullscreenDashboard = ({
 	pipelineList,
 	isFullscreenVisible,
 }: FullscreenDashboardProps) => {
-	metricsList.pop()
+	const coverageMetrics = (metricsList.pop() as unknown) as CoverageMetrics[];
 	const content = (
 		<section css={pageStyle}>
 			<section css={pageContentStyle}>
@@ -123,6 +125,12 @@ const FullscreenDashboard = ({
 							data={metrics.data}
 						/>
 					))}
+					<FullscreenCoverageMetricsCard
+						css={metricsCardStyle}
+						key={4}
+						metricsText={"Coverage Report"}
+						data={coverageMetrics}
+					/>
 				</section>
 			</section>
 		</section>
