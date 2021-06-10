@@ -11,6 +11,7 @@ import Logo from "../../../../../components/Logo/Logo";
 import { Modal } from "antd";
 import FullscreenCoverageMetricsCard from "./FullscreenCoverageMetricsCard";
 import {CoverageMetrics} from "../../../../../models/metrics";
+import CoverageMetricsLegend from "./CoverageMetricsLegend";
 
 interface FullscreenDashboardProps {
 	projectName: string;
@@ -106,6 +107,7 @@ const FullscreenDashboard = ({
 							<PipelineList pipelineList={pipelineList} />
 						</div>
 						<MetricsLegend />
+						<CoverageMetricsLegend/>
 					</div>
 					<p css={escHintStyle}>
 						<Word text={"Press"} type={"medium"} css={{ opacity: 0.5 }} />

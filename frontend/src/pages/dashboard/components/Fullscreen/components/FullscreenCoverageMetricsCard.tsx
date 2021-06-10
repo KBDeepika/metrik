@@ -18,7 +18,7 @@ export interface FullscreenMetricsCardOptions extends React.HTMLAttributes<HTMLD
 
 const cardStyle = {
 	width: "49%",
-	height: "25vh",
+	height: "30vh",
 	backgroundColor: GRAY_11,
 	color: "white",
 	position: "relative" as const,

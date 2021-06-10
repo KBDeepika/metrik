@@ -1,11 +1,12 @@
 import React from "react";
-import { GREEN_LIGHT, BLUE_5, ORANGE_DARK, RED_DARK } from "../constants/styles";
+import { GREEN_LIGHT, BLUE_5, ORANGE_DARK, RED_DARK, GRAY_6 } from "../constants/styles";
 import Word, { WordType } from "./Word/Word";
 export enum Colour {
 	green = "green",
 	blue = "blue",
 	orange = "orange",
 	red = "red",
+	grey = "grey",
 }
 
 const colors = {
@@ -13,6 +14,7 @@ const colors = {
 	blue: BLUE_5,
 	orange: ORANGE_DARK,
 	red: RED_DARK,
+	grey: GRAY_6,
 };
 
 const levelTextStyle = {

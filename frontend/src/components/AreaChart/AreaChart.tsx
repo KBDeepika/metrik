@@ -24,8 +24,6 @@ const AreaChart = <T, K extends keyof T>({
 	curveType = "monotone",
 	...restProps
 }: AreaChartProps<T, K>) => {
-	console.log(data)
-	console.log(dataKey)
 	return (
 		<>
 			<ResponsiveContainer width={width} height={height} {...restProps}>
