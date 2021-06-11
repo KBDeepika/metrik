@@ -21,14 +21,14 @@ export type MetricsStandard = {
 	lt: Standard;
 	mttr: Standard;
 	cfr: Standard;
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	ctcr: any;
-	ftcr: any;
+	ftcr: Standard;
+	ltcr: Standard;
 };
 
 export type MetricsStanderMapping = {
 	Fortnightly: MetricsStandard;
 	Monthly: MetricsStandard;
+	Daily: MetricsStandard;
 };
 
 export const metricsStanderMapping: MetricsStanderMapping = {
@@ -57,8 +57,18 @@ export const metricsStanderMapping: MetricsStanderMapping = {
 			medium: "30%-45% (30% included)",
 			low: "≥ 45%",
 		},
-		ctcr: {},
-		ftcr: {},
+		ftcr: {
+			elite: "> 90%",
+			high: "70%-90% (70% included)",
+			medium: "40%-70% (40% included)",
+			low: "0%-40% (0% included)",
+		},
+		ltcr: {
+			elite: "> 90%",
+			high: "70%-90% (70% included)",
+			medium: "40%-70% (40% included)",
+			low: "< 40%",
+		},
 	},
 	Monthly: {
 		df: {
@@ -85,7 +95,55 @@ export const metricsStanderMapping: MetricsStanderMapping = {
 			medium: "30%-45% (30% included)",
 			low: "≥ 45%",
 		},
-		ctcr: {},
-		ftcr: {},
+		ftcr: {
+			elite: "> 90%",
+			high: "70%-90% (70% included)",
+			medium: "40%-70% (40% included)",
+			low: "0%-40% (0% included)",
+		},
+		ltcr: {
+			elite: "> 90%",
+			high: "70%-90% (70% included)",
+			medium: "40%-70% (40% included)",
+			low: "< 40%",
+		},
+	},
+	Daily: {
+		df: {
+			elite: "> 30 times",
+			high: "4-30 times (30 included)",
+			medium: "1-4 times (4 included)",
+			low: "≤ 1 time",
+		},
+		lt: {
+			elite: "< 1 day",
+			high: "1-7 days (1 included)",
+			medium: "7-30 days (7 included)",
+			low: "≥ 30 days",
+		},
+		mttr: {
+			elite: "< 1 hour",
+			high: "1-24 hours (1 included)",
+			medium: "24-168 hours (24 included)",
+			low: "≥ 168 hours",
+		},
+		cfr: {
+			elite: "< 15%",
+			high: "15%-30% (15 included)",
+			medium: "30%-45% (30% included)",
+			low: "≥ 45%",
+		},
+		ftcr: {
+			elite: "> 90%",
+			high: "70%-90% (70% included)",
+			medium: "40%-70% (40% included)",
+			low: "0%-40% (0% included)",
+		},
+		ltcr: {
+			elite: "> 90%",
+			high: "70%-90% (70% included)",
+			medium: "40%-70% (40% included)",
+			low: "< 40%",
+		},
 	},
 };

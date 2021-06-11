@@ -1,7 +1,6 @@
 package metrik.metrics.rest
 
 import metrik.metrics.domain.calculator.*
-import metrik.metrics.domain.model.CoverageMetrics
 import metrik.metrics.domain.model.Metrics
 import metrik.metrics.domain.model.MetricsUnit
 import metrik.metrics.exception.BadRequestException
@@ -55,6 +54,7 @@ class MetricsApplicationService {
         val pipelineStageMap = pipelineWithStages.map { Pair(it.pipelineId, it.stage) }.toMap()
         val allBuilds = buildRepository.getAllBuilds(pipelineStageMap.keys)
         val timeRangeByUnit: List<Pair<Long, Long>> = timeRangeSplitter.split(startTimestamp, endTimestamp, unit)
+        val timeRangeByUnitForCoverage: List<Pair<Long, Long>> = timeRangeSplitter.split(startTimestamp, endTimestamp, MetricsUnit.Daily)
 
         return FourKeyMetricsResponse(
             generateDeployFrequencyMetrics(
@@ -90,12 +90,22 @@ class MetricsApplicationService {
                 timeRangeByUnit,
                 changeFailureRateCalculator,
             ),
-            generateCoverageReportMetrics(
-                 allBuilds,
-                 startTimestamp,
-                 endTimestamp,
-                 CoverageReportCalculator()
-            )
+             generateCoverageReportMetricsOfGivenType(
+                  allBuilds,
+                  startTimestamp,
+                  endTimestamp,
+                  timeRangeByUnitForCoverage,
+                  CoverageReportCalculator(),
+                  "Files"
+             ),
+             generateCoverageReportMetricsOfGivenType(
+                  allBuilds,
+                  startTimestamp,
+                  endTimestamp,
+                  timeRangeByUnitForCoverage,
+                  CoverageReportCalculator(),
+                  "Lines"
+             )
         )
     }
 
@@ -162,25 +172,37 @@ class MetricsApplicationService {
         return MetricsInfo(summary, details)
     }
 
-    private fun generateCoverageReportMetrics(
-         allBuilds: List<Build>,
-         startTimeMillis: Long,
-         endTimeMillis: Long,
-         calculator: CoverageReportCalculator
-    ): List<CoverageMetrics> {
-
-        val timeRangeByUnit: List<Pair<Long, Long>> = timeRangeSplitter.split(startTimeMillis, endTimeMillis, MetricsUnit.Daily)
-
-        return timeRangeByUnit.map { time ->
-            calculator.calculateValue(allBuilds, time.first, time.second)
-        }.filter { coverageMetrics -> (coverageMetrics.filesValue > 0.0  || coverageMetrics.linesValue > 0.0)}
-    }
-
     private fun getDuration(startTimestamp: Long, endTimestamp: Long): Int {
         val getTimeZone = TimeZone.getDefault().toZoneId()
         val startDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(startTimestamp), getTimeZone)
         val endDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(endTimestamp), getTimeZone)
 
         return Duration.between(startDateTime, endDateTime).toDays().toInt() + 1
+    }
+
+    private fun generateCoverageReportMetricsOfGivenType(
+         allBuilds: List<Build>,
+         startTimeMillis: Long,
+         endTimeMillis: Long,
+         timeRangeByUnit: List<Pair<Long, Long>>,
+         calculator: CoverageReportCalculator,
+         type: String
+         ): MetricsInfo {
+
+        val valueForWholeRange = calculator.calculateValue(allBuilds, startTimeMillis, endTimeMillis, type)
+
+        val summary = Metrics (
+             valueForWholeRange,
+             calculator.calculateLevel(valueForWholeRange),
+             startTimeMillis,
+             endTimeMillis
+        )
+
+        val details = timeRangeByUnit.map {
+            val valueForUnitRange = calculator.calculateValue(allBuilds, it.first, it.second, type)
+            Metrics(valueForUnitRange, it.first, it.second)
+        }.filter { metrics -> metrics.value != 0.0 }
+
+        return MetricsInfo(summary, details)
     }
 }

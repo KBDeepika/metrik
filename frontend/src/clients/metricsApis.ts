@@ -1,5 +1,5 @@
 import { createRequest } from "./createRequest";
-import { MetricsInfo, MetricsUnit, CoverageMetrics} from "../models/metrics";
+import { MetricsInfo, MetricsUnit } from "../models/metrics";
 
 interface PipelineStageRequest {
 	pipelineId: string;
@@ -18,7 +18,8 @@ export interface FourKeyMetrics {
 	deploymentFrequency: MetricsInfo;
 	leadTimeForChange: MetricsInfo;
 	meanTimeToRestore: MetricsInfo;
-	coverageReport: CoverageMetrics[];
+	filesCoverageReport: MetricsInfo;
+	linesCoverageReport: MetricsInfo;
 }
 
 export const getFourKeyMetricsUsingPost = createRequest<
@@ -26,10 +27,9 @@ export const getFourKeyMetricsUsingPost = createRequest<
 		metricsQuery: MetricsQueryRequest;
 	},
 	FourKeyMetrics
-	>(({ metricsQuery }) => ({
+>(({ metricsQuery }) => ({
 	method: "POST",
 	url: `/api/pipeline/metrics`,
 	data: metricsQuery,
 	headers: { "Content-Type": "application/json" },
 }));
-

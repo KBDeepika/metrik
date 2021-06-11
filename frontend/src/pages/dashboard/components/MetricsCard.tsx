@@ -57,6 +57,25 @@ const CustomizeTick: FC<CustomizeTickProps> = ({ x, y, textAnchor, data, payload
 	}
 	const { startTime, endTime } = durationFormatter(payload.value, currentTickItem.endTimestamp);
 
+	let xAxisLabel = (
+		<tspan x={x} dy="1.5em">
+			{startTime}
+		</tspan>
+	);
+
+	if (startTime != endTime) {
+		xAxisLabel = (
+			<>
+				<tspan x={x} dy="1.5em">
+					{startTime}
+				</tspan>
+				<tspan x={x} dy="1.25em">
+					- {endTime}
+				</tspan>
+			</>
+		);
+	}
+
 	return (
 		<text
 			x={x}
@@ -66,12 +85,7 @@ const CustomizeTick: FC<CustomizeTickProps> = ({ x, y, textAnchor, data, payload
 			fillOpacity={0.75}
 			fontSize={12}
 			textAnchor={textAnchor}>
-			<tspan x={x} dy="1.5em">
-				{startTime}
-			</tspan>
-			<tspan x={x} dy="1.25em">
-				- {endTime}
-			</tspan>
+			{xAxisLabel}
 		</text>
 	);
 };
@@ -83,6 +97,7 @@ interface MetricsCardProps {
 	yaxisFormatter: (value: string) => string;
 	yAxisLabel: string;
 	loading: boolean;
+	subTitle: string;
 	subTitleUnit: string;
 	info: ReactNode;
 	yAxisDomain?: AxisDomain;
@@ -95,6 +110,7 @@ export const MetricsCard: FC<MetricsCardProps> = ({
 	yaxisFormatter,
 	yAxisLabel,
 	loading,
+	subTitle,
 	subTitleUnit,
 	info,
 	yAxisDomain,
@@ -135,7 +151,7 @@ export const MetricsCard: FC<MetricsCardProps> = ({
 								: yaxisFormatter((summary.value || "").toString())}
 						</div>
 						<div css={metricsUnitStyles}>
-							<div>AVG.</div>
+							<div>{subTitle}</div>
 							<div>{subTitleUnit}</div>
 						</div>
 					</div>

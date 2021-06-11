@@ -6,11 +6,9 @@ import { dateFormatYYYYMMDD } from "../../../../../constants/date-format";
 import { SwapRightOutlined } from "@ant-design/icons";
 import PipelineList from "./PipelineList";
 import MetricsLegend from "./MetricsLegend";
-import { BLUE_5, GRAY_1, GRAY_9, GREEN_LIGHT } from "../../../../../constants/styles";
+import { GRAY_1, GRAY_9 } from "../../../../../constants/styles";
 import Logo from "../../../../../components/Logo/Logo";
 import { Modal } from "antd";
-import FullscreenCoverageMetricsCard from "./FullscreenCoverageMetricsCard";
-import { CoverageMetrics } from "../../../../../models/metrics";
 
 interface FullscreenDashboardProps {
 	projectName: string;
@@ -75,7 +73,6 @@ const FullscreenDashboard = ({
 	pipelineList,
 	isFullscreenVisible,
 }: FullscreenDashboardProps) => {
-	const coverageMetrics = (metricsList.pop() as unknown) as CoverageMetrics[];
 	const content = (
 		<section css={pageStyle}>
 			<section css={pageContentStyle}>
@@ -125,22 +122,6 @@ const FullscreenDashboard = ({
 							data={metrics.data}
 						/>
 					))}
-					<FullscreenCoverageMetricsCard
-						css={metricsCardStyle}
-						key={4}
-						metricsText={"Files Test Coverage"}
-						data={coverageMetrics}
-						dataKey="filesValue"
-						color={GREEN_LIGHT}
-					/>
-					<FullscreenCoverageMetricsCard
-						css={metricsCardStyle}
-						key={4}
-						metricsText={"Lines Test Coverage"}
-						data={coverageMetrics}
-						dataKey="linesValue"
-						color={BLUE_5}
-					/>
 				</section>
 			</section>
 		</section>

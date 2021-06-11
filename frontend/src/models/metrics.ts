@@ -3,6 +3,8 @@ export enum MetricsType {
 	LEAD_TIME_FOR_CHANGE = "Lead Time for Change",
 	MEAN_TIME_TO_RESTORE = "Mean Time To Restore",
 	CHANGE_FAILURE_RATE = "Change Failure Rate",
+	FILES_TEST_COVERAGE_REPORT = "Test Coverage Report (Files)",
+	LINES_TEST_COVERAGE_REPORT = "Test Coverage Report (Lines)",
 }
 
 export enum MetricsLevel {
@@ -16,6 +18,7 @@ export enum MetricsLevel {
 export enum MetricsUnit {
 	FORTNIGHTLY = "Fortnightly",
 	MONTHLY = "Monthly",
+	DAILY = "Daily",
 }
 
 export type MetricType = "df" | "lt" | "mttr" | "cfr" | "ftcr" | "ltcr";

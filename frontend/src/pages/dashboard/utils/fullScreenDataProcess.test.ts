@@ -4,8 +4,8 @@ import {
 	mapMetricsList,
 	mapPipelines,
 } from "./fullScreenDataProcess";
-import {CoverageMetrics, MetricsInfo, MetricsLevel, MetricsUnit} from "../../../models/metrics";
-import {FourKeyMetrics} from "../../../clients/metricsApis";
+import { CoverageMetrics, MetricsInfo, MetricsLevel, MetricsUnit } from "../../../models/metrics";
+import { FourKeyMetrics } from "../../../clients/metricsApis";
 
 describe("#fullscreenDataProcess #mapMetricsList", () => {
 	test("should map out correct data type given metrics response", () => {
@@ -34,7 +34,8 @@ describe("#fullscreenDataProcess #mapMetricsList", () => {
 			deploymentFrequency: itemData,
 			leadTimeForChange: itemData,
 			meanTimeToRestore: itemData,
-			coverageReport: [] as CoverageMetrics[],
+			filesCoverageReport: itemData,
+			linesCoverageReport: itemData,
 		};
 		const expectedData = [
 			{
@@ -76,7 +77,20 @@ describe("#fullscreenDataProcess #mapMetricsList", () => {
 				metricsText: "Change Failure Rate",
 				data: expectedData,
 			},
-			[],
+			{
+				metricsSummaryData: 30,
+				metricsLevel: MetricsLevel.LOW,
+				metricsDataLabel: "TOTAL %",
+				metricsText: "Test Coverage Report (Files)",
+				data: expectedData,
+			},
+			{
+				metricsSummaryData: 30,
+				metricsLevel: MetricsLevel.LOW,
+				metricsDataLabel: "TOTAL %",
+				metricsText: "Test Coverage Report (Lines)",
+				data: expectedData,
+			},
 		];
 		const result = mapMetricsList(metricsResponse as FourKeyMetrics, MetricsUnit.FORTNIGHTLY);
 		expect(expectResult).toEqual(result);

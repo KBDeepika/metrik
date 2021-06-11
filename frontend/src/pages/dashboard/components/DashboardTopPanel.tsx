@@ -27,6 +27,7 @@ import FullscreenDashboard from "./Fullscreen/components/FullscreenDashboard";
 import { mapMetricsList, mapPipelines } from "../utils/fullScreenDataProcess";
 import { MetricsUnit } from "../../../models/metrics";
 import { ProgressSummary, SyncProgressContent } from "./SyncProgressContent";
+import {FullscreenMetricsCardOptions} from "./Fullscreen/components/FullscreenMetricsCard";
 
 const { Text } = Typography;
 const { RangePicker } = DatePicker;

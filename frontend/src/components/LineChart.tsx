@@ -60,6 +60,7 @@ const tooltipLabelFormatter = (data: Metrics[]) => {
 			currentDataPoint.startTimestamp,
 			currentDataPoint.endTimestamp
 		);
+		if (startTime == endTime) return `${startTime}`;
 		return `${startTime} - ${endTime}`;
 	};
 };
