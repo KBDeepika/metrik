@@ -1,19 +1,14 @@
 import React from "react";
 import AreaChart from "../../../../../components/AreaChart/AreaChart";
 import Word from "../../../../../components/Word/Word";
-import {
-	BLUE_5,
-	GRAY_11,
-	GRAY_6,
-	GREEN_LIGHT,
-	ORANGE_LIGHT,
-	RED_LIGHT,
-} from "../../../../../constants/styles";
+import { GRAY_11, GREEN_LIGHT } from "../../../../../constants/styles";
 import { CoverageMetrics } from "../../../../../models/metrics";
 
 export interface FullscreenMetricsCardOptions extends React.HTMLAttributes<HTMLDivElement> {
 	metricsText: string;
 	data: CoverageMetrics[];
+	dataKey: string;
+	color: string;
 }
 
 const cardStyle = {
@@ -29,6 +24,8 @@ const dataDisplayStyle = {
 const FullscreenCoverageMetricsCard = ({
 	metricsText,
 	data,
+	dataKey,
+	color,
 }: FullscreenMetricsCardOptions) => {
 	return (
 		<>
@@ -41,54 +38,10 @@ const FullscreenCoverageMetricsCard = ({
 				<AreaChart
 					css={{ position: "absolute" as const, bottom: 0 }}
 					data={data}
-					dataKey={"packagesValue"}
+					dataKey={dataKey}
 					width={"100%"}
 					height={"45%"}
-					strokeColor={RED_LIGHT}
-					strokeWidth={5}
-					areaGradientColor={"RGBA(155, 155, 155, 1)"}
-					curveType={"monotone"}
-				/>
-				<AreaChart
-					css={{ position: "absolute" as const, bottom: 0 }}
-					data={data}
-					dataKey={"filesValue"}
-					width={"100%"}
-					height={"45%"}
-					strokeColor={ORANGE_LIGHT}
-					strokeWidth={5}
-					areaGradientColor={"RGBA(155, 155, 155, 1)"}
-					curveType={"monotone"}
-				/>
-				<AreaChart
-					css={{ position: "absolute" as const, bottom: 0 }}
-					data={data}
-					dataKey={"classesValue"}
-					width={"100%"}
-					height={"45%"}
-					strokeColor={GREEN_LIGHT}
-					strokeWidth={5}
-					areaGradientColor={"RGBA(155, 155, 155, 1)"}
-					curveType={"monotone"}
-				/>
-				<AreaChart
-					css={{ position: "absolute" as const, bottom: 0 }}
-					data={data}
-					dataKey={"linesValue"}
-					width={"100%"}
-					height={"45%"}
-					strokeColor={BLUE_5}
-					strokeWidth={5}
-					areaGradientColor={"RGBA(155, 155, 155, 1)"}
-					curveType={"monotone"}
-				/>
-				<AreaChart
-					css={{ position: "absolute" as const, bottom: 0 }}
-					data={data}
-					dataKey={"conditionalsValue"}
-					width={"100%"}
-					height={"45%"}
-					strokeColor={GRAY_6}
+					strokeColor={color}
 					strokeWidth={5}
 					areaGradientColor={"RGBA(155, 155, 155, 1)"}
 					curveType={"monotone"}

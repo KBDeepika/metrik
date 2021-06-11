@@ -31,11 +31,8 @@ const initialMetricsState: MetricsInfo = {
 
 const initialCoverageMetricsState: CoverageMetrics[] = [
 	{
-		packagesValue: 0,
 		filesValue: 0,
-		classesValue: 0,
 		linesValue: 0,
-		conditionalsValue: 0,
 		startTimestamp: 0,
 		endTimestamp: 0,
 	}
@@ -73,11 +70,8 @@ export const PageDashboard = () => {
 	};
 	const defaultCoverageMetricsData = [
 		{
-			packagesValue: 0,
 			filesValue: 0,
-			classesValue: 0,
 			linesValue: 0,
-			conditionalsValue: 0,
 			startTimestamp: 0,
 			endTimestamp: 0,
 		},
@@ -200,9 +194,22 @@ export const PageDashboard = () => {
 
 					<Col xs={24} sm={24} md={24} lg={12}>
 						<CoverageMetricsCard
-							title="Coverage Report"
-							info={<CoverageMetricTooltip type={"cr"} />}
+							title="Files Test Coverage"
+							info={<CoverageMetricTooltip type={"ftcr"} />}
 							data={coverageReport}
+							dataKey="filesValue"
+							yaxisFormatter={(value: string) => value + "%"}
+							yAxisLabel="Percentage"
+							loading={loadingChart}
+							yAxisDomain={[0, 100]}
+						/>
+					</Col>
+					<Col xs={24} sm={24} md={24} lg={12}>
+						<CoverageMetricsCard
+							title="Lines Test Coverage"
+							info={<CoverageMetricTooltip type={"ltcr"} />}
+							data={coverageReport}
+							dataKey="linesValue"
 							yaxisFormatter={(value: string) => value + "%"}
 							yAxisLabel="Percentage"
 							loading={loadingChart}

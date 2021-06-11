@@ -9,11 +9,8 @@ import java.math.RoundingMode
 
 class CoverageReportCalculator {
   fun calculateValue(allBuilds: List<Build>, startTimestamp: Long, endTimestamp: Long): CoverageMetrics {
-    var packagesValue = 0.0
     var filesValue = 0.0
-    var classesValue = 0.0
     var linesValue = 0.0
-    var conditionalsValue = 0.0
     var count = 0
     allBuilds.groupBy { it.pipelineId }.forEach { pipeLineBuilds ->
       val filteredBuildsInGivenTimeRange = getSucceedBuildsUnderTimeRange(pipeLineBuilds, startTimestamp, endTimestamp)
@@ -21,20 +18,14 @@ class CoverageReportCalculator {
       if (buildOrderByTimestampAscending.isNotEmpty()) {
         val latestBuild = buildOrderByTimestampAscending.last()
         val coverageSummary = Klaxon().parse<CoverageSummary>(latestBuild.coverageDetails)!!
-        packagesValue += coverageSummary.results.elements.find { x -> x.name == "Packages" }!!.ratio
         filesValue += coverageSummary.results.elements.find { x -> x.name == "Files" }!!.ratio
-        classesValue += coverageSummary.results.elements.find { x -> x.name == "Classes" }!!.ratio
         linesValue += coverageSummary.results.elements.find { x -> x.name == "Lines" }!!.ratio
-        conditionalsValue += coverageSummary.results.elements.find { x -> x.name == "Conditionals" }!!.ratio
         count++
       }
     }
     return CoverageMetrics(
-         divide(packagesValue, count),
          divide(filesValue, count),
-         divide(classesValue, count),
          divide(linesValue, count),
-         divide(conditionalsValue, count),
          startTimestamp, endTimestamp)
     }
 

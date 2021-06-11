@@ -5,7 +5,7 @@ import { AREA_GRADIENT_DEFAULT_COLOR } from "../../constants/styles";
 
 interface AreaChartProps<T, K> extends React.HTMLAttributes<HTMLDivElement> {
 	data: T[];
-	dataKey: Exclude<K, symbol>;
+	dataKey: string;
 	width: number | string;
 	height?: number | string;
 	strokeColor?: string;

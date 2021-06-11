@@ -35,6 +35,7 @@ export interface CustomizeTickProps {
 
 interface LineChartProps {
 	data: CoverageMetrics[];
+	dataKey : string;
 	yaxisFormatter: (value: string) => string;
 	unit: string;
 	CustomizeTick: FC<CustomizeTickProps>;
@@ -102,6 +103,7 @@ const tooltipValueFormatterBuilder = (yaxisFormatter: (value: string) => string)
 
 export const CoverageLineChart: FC<LineChartProps> = ({
 	data,
+	dataKey,
 	yaxisFormatter,
 	unit,
 	CustomizeTick,
@@ -188,81 +190,9 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 						<Line
 							connectNulls
-							activeDot={{ fill: RED_LIGHT, r: 6 }}
-							type="monotone"
-							dataKey="packagesValue"
-							stroke={RED_LIGHT}
-							strokeWidth={2}
-							fill={GRAY_1}
-							isAnimationActive={false}
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							label={{
-								position: "top",
-								formatter: yaxisFormatter,
-								fontSize: 12,
-								style: { transform: "translateY(-5px)" },
-							}}
-						/>
-						<Line
-							connectNulls
-							activeDot={{ fill: ORANGE_LIGHT, r: 6 }}
-							type="monotone"
-							dataKey="filesValue"
-							stroke={ORANGE_LIGHT}
-							strokeWidth={2}
-							fill={GRAY_1}
-							isAnimationActive={false}
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							label={{
-								position: "top",
-								formatter: yaxisFormatter,
-								fontSize: 12,
-								style: { transform: "translateY(-5px)" },
-							}}
-						/>
-						<Line
-							connectNulls
-							activeDot={{ fill: GREEN_LIGHT, r: 6 }}
-							type="monotone"
-							dataKey="classesValue"
-							stroke={GREEN_LIGHT}
-							strokeWidth={2}
-							fill={GRAY_1}
-							isAnimationActive={false}
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							label={{
-								position: "top",
-								formatter: yaxisFormatter,
-								fontSize: 12,
-								style: { transform: "translateY(-5px)" },
-							}}
-						/>
-						<Line
-							connectNulls
-							activeDot={{ fill: BLUE_5, r: 6 }}
-							type="monotone"
-							dataKey="linesValue"
-							stroke={BLUE_5}
-							strokeWidth={2}
-							fill={GRAY_1}
-							isAnimationActive={false}
-							// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-							// @ts-ignore
-							label={{
-								position: "top",
-								formatter: yaxisFormatter,
-								fontSize: 12,
-								style: { transform: "translateY(-5px)" },
-							}}
-						/>
-						<Line
-							connectNulls
 							activeDot={{ fill: GRAY_6, r: 6 }}
 							type="monotone"
-							dataKey="conditionalsValue"
+							dataKey={dataKey}
 							stroke={GRAY_6}
 							strokeWidth={2}
 							fill={GRAY_1}
@@ -288,53 +218,6 @@ export const CoverageLineChart: FC<LineChartProps> = ({
 						/>
 					</RechartsLineChart>
 				</ResponsiveContainer>
-			</div>
-			<div css={CoverageInfoWrapper}>
-				<div>
-					<span
-						css={CoverageInfoIndicator}
-						style={{
-							backgroundColor: RED_LIGHT,
-						}}
-					/>
-					<span css={CoverageInfoLabel}>Packages</span>
-				</div>
-				<div>
-					<span
-						css={CoverageInfoIndicator}
-						style={{
-							backgroundColor: ORANGE_LIGHT,
-						}}
-					/>
-					<span css={CoverageInfoLabel}>Files</span>
-				</div>
-				<div>
-					<span
-						css={CoverageInfoIndicator}
-						style={{
-							backgroundColor: GREEN_LIGHT,
-						}}
-					/>
-					<span css={CoverageInfoLabel}>Classes</span>
-				</div>
-				<div>
-					<span
-						css={CoverageInfoIndicator}
-						style={{
-							backgroundColor: BLUE_5,
-						}}
-					/>
-					<span css={CoverageInfoLabel}>Lines</span>
-				</div>
-				<div>
-					<span
-						css={CoverageInfoIndicator}
-						style={{
-							backgroundColor: GRAY_6,
-						}}
-					/>
-					<span css={CoverageInfoLabel}>Conditionals</span>
-				</div>
 			</div>
 		</div>
 	);

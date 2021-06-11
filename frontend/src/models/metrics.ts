@@ -18,7 +18,7 @@ export enum MetricsUnit {
 	MONTHLY = "Monthly",
 }
 
-export type MetricType = "df" | "lt" | "mttr" | "cfr" | "cr";
+export type MetricType = "df" | "lt" | "mttr" | "cfr" | "ftcr" | "ltcr";
 
 export interface Metrics {
 	value: number | "NaN" | undefined;
@@ -40,11 +40,8 @@ export interface MetricsInfo {
 }
 
 export interface CoverageMetrics {
-	packagesValue: number;
 	filesValue: number;
-	classesValue: number;
 	linesValue: number;
-	conditionalsValue: number;
 	startTimestamp: number;
 	endTimestamp: number;
 }

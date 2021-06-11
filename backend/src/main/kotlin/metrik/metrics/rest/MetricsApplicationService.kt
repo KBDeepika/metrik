@@ -173,7 +173,7 @@ class MetricsApplicationService {
 
         return timeRangeByUnit.map { time ->
             calculator.calculateValue(allBuilds, time.first, time.second)
-        }.filter { coverageMetrics -> coverageMetrics.packagesValue > 0.0 }
+        }.filter { coverageMetrics -> (coverageMetrics.filesValue > 0.0  || coverageMetrics.linesValue > 0.0)}
     }
 
     private fun getDuration(startTimestamp: Long, endTimestamp: Long): Int {

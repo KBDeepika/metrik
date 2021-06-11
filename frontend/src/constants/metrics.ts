@@ -5,7 +5,8 @@ export const metricsExplanations = {
 	mttr:
 		"The average amount of time it takes to restore from deployment failures in target environment under the given date range.",
 	cfr: "The percentage of deployment failures in target environment under the given date range.",
-	cr: "The coverage report of the target environment under the given date range",
+	ftcr: "The files test coverage report of the target environment under the given date range",
+	ltcr: "The lines test coverage report of the target environment under the given date range",
 };
 
 export type Standard = {
@@ -21,7 +22,8 @@ export type MetricsStandard = {
 	mttr: Standard;
 	cfr: Standard;
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	cr: any;
+	ctcr: any;
+	ftcr: any;
 };
 
 export type MetricsStanderMapping = {
@@ -55,7 +57,8 @@ export const metricsStanderMapping: MetricsStanderMapping = {
 			medium: "30%-45% (30% included)",
 			low: "≥ 45%",
 		},
-		cr: {},
+		ctcr: {},
+		ftcr: {},
 	},
 	Monthly: {
 		df: {
@@ -82,6 +85,7 @@ export const metricsStanderMapping: MetricsStanderMapping = {
 			medium: "30%-45% (30% included)",
 			low: "≥ 45%",
 		},
-		cr: {},
+		ctcr: {},
+		ftcr: {},
 	},
 };

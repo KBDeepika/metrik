@@ -55,6 +55,7 @@ const CustomizeTick: FC<CustomizeTickProps> = ({ x, y, textAnchor, data, payload
 interface MetricsCardProps {
 	title: string;
 	data: CoverageMetrics[];
+	dataKey: string;
 	yaxisFormatter: (value: string) => string;
 	yAxisLabel: string;
 	loading: boolean;
@@ -65,6 +66,7 @@ interface MetricsCardProps {
 export const CoverageMetricsCard: FC<MetricsCardProps> = ({
 	title,
 	data,
+	dataKey,
 	yaxisFormatter,
 	yAxisLabel,
 	loading,
@@ -85,6 +87,7 @@ export const CoverageMetricsCard: FC<MetricsCardProps> = ({
 					</div>
 					<CoverageLineChart
 						data={data}
+						dataKey={dataKey}
 						yaxisFormatter={yaxisFormatter}
 						unit={yAxisLabel}
 						CustomizeTick={CustomizeTick}
