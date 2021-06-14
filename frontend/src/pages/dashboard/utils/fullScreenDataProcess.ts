@@ -4,14 +4,16 @@ import { Pipeline } from "../components/DashboardTopPanel";
 import { Option } from "../../../components/MultipleCascadeSelect";
 import { generateTagLabel } from "../../../utils/dataTransform/dataTransform";
 import { Metrics, MetricsType, MetricsUnit } from "../../../models/metrics";
-import {FullscreenMetricsCardOptions} from "../components/Fullscreen/components/FullscreenMetricsCard";
+import { FullscreenMetricsCardOptions } from "../components/Fullscreen/components/FullscreenMetricsCard";
 
-export const mapMetricsList = (metricsResponse: FourKeyMetrics, samplingInterval: MetricsUnit) : FullscreenMetricsCardOptions[]=> {
+export const mapMetricsList = (
+	metricsResponse: FourKeyMetrics,
+	samplingInterval: MetricsUnit
+): FullscreenMetricsCardOptions[] => {
 	const deploymentFrequency = cleanMetricsInfo(metricsResponse.deploymentFrequency);
 	const leadTimeForChange = cleanMetricsInfo(metricsResponse.leadTimeForChange);
 	const meanTimeToRestore = cleanMetricsInfo(metricsResponse.meanTimeToRestore);
 	const changeFailureRate = cleanMetricsInfo(metricsResponse.changeFailureRate);
-	const filesCoverageReport = metricsResponse.filesCoverageReport;
 	const linesCoverageReport = metricsResponse.linesCoverageReport;
 	return [
 		{
@@ -41,13 +43,6 @@ export const mapMetricsList = (metricsResponse: FourKeyMetrics, samplingInterval
 			metricsDataLabel: "AVG %",
 			metricsText: MetricsType.CHANGE_FAILURE_RATE,
 			data: addBaseValueToDetailData(changeFailureRate.details),
-		} as FullscreenMetricsCardOptions,
-		{
-			metricsSummaryData: filesCoverageReport.summary.value,
-			metricsLevel: filesCoverageReport.summary.level,
-			metricsDataLabel: "TOTAL %",
-			metricsText: MetricsType.FILES_TEST_COVERAGE_REPORT,
-			data: addBaseValueToDetailData(filesCoverageReport.details),
 		} as FullscreenMetricsCardOptions,
 		{
 			metricsSummaryData: linesCoverageReport.summary.value,

@@ -155,7 +155,6 @@ class JenkinsPipelineService(
             }
             throw PipelineConfigVerifyException("Verify failed")
         }
-        logger.info(response.body)
         return response.body!!.trim()
     }
 

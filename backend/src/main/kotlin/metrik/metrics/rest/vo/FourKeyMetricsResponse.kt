@@ -9,6 +9,5 @@ data class FourKeyMetricsResponse(
     val leadTimeForChange: MetricsInfo,
     val meanTimeToRestore: MetricsInfo,
     val changeFailureRate: MetricsInfo,
-    val filesCoverageReport: MetricsInfo,
     val linesCoverageReport: MetricsInfo,
 )

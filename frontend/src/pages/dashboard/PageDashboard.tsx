@@ -38,7 +38,6 @@ export const PageDashboard = () => {
 	const [deploymentFrequency, setDeploymentFrequency] = useState<MetricsInfo>(initialMetricsState);
 	const [leadTimeForChange, setLeadTimeForChange] = useState<MetricsInfo>(initialMetricsState);
 	const [meanTimeToRestore, setMeanTimeToRestore] = useState<MetricsInfo>(initialMetricsState);
-	const [filesCoverageReport, setFilesCoverageReport] = useState<MetricsInfo>(initialMetricsState);
 	const [linesCoverageReport, setLinesCoverageReport] = useState<MetricsInfo>(initialMetricsState);
 	const [loadingChart, setLoadingChart] = useState(false);
 	const defaultMetricsData = {
@@ -62,7 +61,6 @@ export const PageDashboard = () => {
 		deploymentFrequency: defaultMetricsData,
 		leadTimeForChange: defaultMetricsData,
 		meanTimeToRestore: defaultMetricsData,
-		filesCoverageReport: defaultMetricsData,
 		linesCoverageReport: defaultMetricsData,
 	});
 
@@ -88,7 +86,6 @@ export const PageDashboard = () => {
 				setDeploymentFrequency(cleanMetricsInfo(response.deploymentFrequency));
 				setLeadTimeForChange(cleanMetricsInfo(response.leadTimeForChange));
 				setMeanTimeToRestore(cleanMetricsInfo(response.meanTimeToRestore));
-				setFilesCoverageReport(cleanMetricsInfo(response.filesCoverageReport));
 				setLinesCoverageReport(cleanMetricsInfo(response.linesCoverageReport));
 			})
 			.finally(() => {
@@ -178,22 +175,7 @@ export const PageDashboard = () => {
 						/>
 					</Col>
 
-					<Col xs={24} sm={24} md={24} lg={12}>
-						<MetricsCard
-							title="Test Coverage Report (Files)"
-							info={<MetricTooltip unit={MetricsUnit.DAILY} type={"ftcr"} />}
-							summary={filesCoverageReport.summary}
-							data={filesCoverageReport.details}
-							yaxisFormatter={(value: string) => value + "%"}
-							yAxisLabel="Percentage"
-							loading={loadingChart}
-							subTitle="TOTAL."
-							subTitleUnit="Percentage"
-							yAxisDomain={[0, calcMaxValueWithRatio(filesCoverageReport.details, 100, 1)]}
-						/>
-					</Col>
-
-					<Col xs={24} sm={24} md={24} lg={12}>
+					<Col xs={24} sm={24} md={24} lg={24}>
 						<MetricsCard
 							title="Test Coverage Report (Lines)"
 							info={<MetricTooltip unit={MetricsUnit.DAILY} type={"ltcr"} />}

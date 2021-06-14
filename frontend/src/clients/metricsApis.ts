@@ -18,7 +18,6 @@ export interface FourKeyMetrics {
 	deploymentFrequency: MetricsInfo;
 	leadTimeForChange: MetricsInfo;
 	meanTimeToRestore: MetricsInfo;
-	filesCoverageReport: MetricsInfo;
 	linesCoverageReport: MetricsInfo;
 }
 

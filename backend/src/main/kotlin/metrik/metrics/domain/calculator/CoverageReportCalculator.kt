@@ -16,9 +16,11 @@ class CoverageReportCalculator {
       val buildOrderByTimestampAscending = filteredBuildsInGivenTimeRange.sortedBy { build -> build.timestamp }
       if (buildOrderByTimestampAscending.isNotEmpty()) {
         val latestBuild = buildOrderByTimestampAscending.last()
-        val coverageSummary = Klaxon().parse<CoverageSummary>(latestBuild.coverageDetails)!!
-        value += coverageSummary.results.elements.find { x -> x.name == type }!!.ratio
-        count++
+        if(latestBuild.coverageDetails.isNotEmpty()){
+          val coverageSummary = Klaxon().parse<CoverageSummary>(latestBuild.coverageDetails)!!
+          value += coverageSummary.results.elements.find { x -> x.name == type }!!.ratio
+          count++
+        }
       }
     }
     return divide(value, count);

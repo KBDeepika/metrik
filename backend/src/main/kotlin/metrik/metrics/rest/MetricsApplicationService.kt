@@ -96,14 +96,6 @@ class MetricsApplicationService {
                   endTimestamp,
                   timeRangeByUnitForCoverage,
                   CoverageReportCalculator(),
-                  "Files"
-             ),
-             generateCoverageReportMetricsOfGivenType(
-                  allBuilds,
-                  startTimestamp,
-                  endTimestamp,
-                  timeRangeByUnitForCoverage,
-                  CoverageReportCalculator(),
                   "Lines"
              )
         )

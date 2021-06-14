@@ -1,13 +1,13 @@
 package metrik.metrics.rest
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import metrik.metrics.domain.model.LEVEL
+import metrik.metrics.domain.model.Metrics
+import metrik.metrics.domain.model.MetricsUnit
 import metrik.metrics.rest.vo.FourKeyMetricsResponse
 import metrik.metrics.rest.vo.MetricsInfo
 import metrik.metrics.rest.vo.MetricsQueryRequest
 import metrik.metrics.rest.vo.PipelineStageRequest
-import metrik.metrics.domain.model.LEVEL
-import metrik.metrics.domain.model.Metrics
-import metrik.metrics.domain.model.MetricsUnit
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
@@ -45,7 +45,8 @@ internal class MetricsControllerTest {
             deploymentFrequency = metrics,
             leadTimeForChange = metrics,
             changeFailureRate = metrics,
-            meanTimeToRestore = metrics
+            meanTimeToRestore = metrics,
+            linesCoverageReport = metrics
         )
         `when`(
             metricsApplicationService.retrieve4KeyMetrics(
@@ -71,6 +72,7 @@ internal class MetricsControllerTest {
             .andExpect(jsonPath("$.leadTimeForChange.details[0].value").value(value))
             .andExpect(jsonPath("$.changeFailureRate").isNotEmpty)
             .andExpect(jsonPath("$.meanTimeToRestore").isNotEmpty)
+            .andExpect(jsonPath("$.linesCoverageReport").isNotEmpty)
     }
 
     @Test
@@ -90,7 +92,8 @@ internal class MetricsControllerTest {
             deploymentFrequency = metrics,
             leadTimeForChange = metrics,
             changeFailureRate = metrics,
-            meanTimeToRestore = metrics
+            meanTimeToRestore = metrics,
+            linesCoverageReport = metrics
         )
         `when`(
             metricsApplicationService.retrieve4KeyMetrics(
@@ -119,5 +122,6 @@ internal class MetricsControllerTest {
             .andExpect(jsonPath("$.leadTimeForChange.details[0].value").value(value))
             .andExpect(jsonPath("$.changeFailureRate").isNotEmpty)
             .andExpect(jsonPath("$.meanTimeToRestore").isNotEmpty)
+            .andExpect(jsonPath("$.linesCoverageReport").isNotEmpty)
     }
 }

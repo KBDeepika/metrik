@@ -5,7 +5,6 @@ export const metricsExplanations = {
 	mttr:
 		"The average amount of time it takes to restore from deployment failures in target environment under the given date range.",
 	cfr: "The percentage of deployment failures in target environment under the given date range.",
-	ftcr: "The files test coverage report of the target environment under the given date range",
 	ltcr: "The lines test coverage report of the target environment under the given date range",
 };
 
@@ -21,7 +20,6 @@ export type MetricsStandard = {
 	lt: Standard;
 	mttr: Standard;
 	cfr: Standard;
-	ftcr: Standard;
 	ltcr: Standard;
 };
 
@@ -57,12 +55,6 @@ export const metricsStanderMapping: MetricsStanderMapping = {
 			medium: "30%-45% (30% included)",
 			low: "≥ 45%",
 		},
-		ftcr: {
-			elite: "> 90%",
-			high: "70%-90% (70% included)",
-			medium: "40%-70% (40% included)",
-			low: "0%-40% (0% included)",
-		},
 		ltcr: {
 			elite: "> 90%",
 			high: "70%-90% (70% included)",
@@ -95,12 +87,6 @@ export const metricsStanderMapping: MetricsStanderMapping = {
 			medium: "30%-45% (30% included)",
 			low: "≥ 45%",
 		},
-		ftcr: {
-			elite: "> 90%",
-			high: "70%-90% (70% included)",
-			medium: "40%-70% (40% included)",
-			low: "0%-40% (0% included)",
-		},
 		ltcr: {
 			elite: "> 90%",
 			high: "70%-90% (70% included)",
@@ -132,12 +118,6 @@ export const metricsStanderMapping: MetricsStanderMapping = {
 			high: "15%-30% (15 included)",
 			medium: "30%-45% (30% included)",
 			low: "≥ 45%",
-		},
-		ftcr: {
-			elite: "> 90%",
-			high: "70%-90% (70% included)",
-			medium: "40%-70% (40% included)",
-			low: "0%-40% (0% included)",
 		},
 		ltcr: {
 			elite: "> 90%",

@@ -4,7 +4,7 @@ import {
 	mapMetricsList,
 	mapPipelines,
 } from "./fullScreenDataProcess";
-import { CoverageMetrics, MetricsInfo, MetricsLevel, MetricsUnit } from "../../../models/metrics";
+import { MetricsLevel, MetricsUnit } from "../../../models/metrics";
 import { FourKeyMetrics } from "../../../clients/metricsApis";
 
 describe("#fullscreenDataProcess #mapMetricsList", () => {
@@ -34,7 +34,6 @@ describe("#fullscreenDataProcess #mapMetricsList", () => {
 			deploymentFrequency: itemData,
 			leadTimeForChange: itemData,
 			meanTimeToRestore: itemData,
-			filesCoverageReport: itemData,
 			linesCoverageReport: itemData,
 		};
 		const expectedData = [
@@ -75,13 +74,6 @@ describe("#fullscreenDataProcess #mapMetricsList", () => {
 				metricsLevel: MetricsLevel.LOW,
 				metricsDataLabel: "AVG %",
 				metricsText: "Change Failure Rate",
-				data: expectedData,
-			},
-			{
-				metricsSummaryData: 30,
-				metricsLevel: MetricsLevel.LOW,
-				metricsDataLabel: "TOTAL %",
-				metricsText: "Test Coverage Report (Files)",
 				data: expectedData,
 			},
 			{
