@@ -95,8 +95,7 @@ class MetricsApplicationService {
                   startTimestamp,
                   endTimestamp,
                   timeRangeByUnitForCoverage,
-                  CoverageReportCalculator(),
-                  "Lines"
+                  CoverageReportCalculator()
              )
         )
     }
@@ -177,10 +176,10 @@ class MetricsApplicationService {
          startTimeMillis: Long,
          endTimeMillis: Long,
          timeRangeByUnit: List<Pair<Long, Long>>,
-         calculator: CoverageReportCalculator,
-         type: String
+         calculator: CoverageReportCalculator
          ): MetricsInfo {
 
+        val type = "Lines";
         val valueForWholeRange = calculator.calculateValue(allBuilds, startTimeMillis, endTimeMillis, type)
 
         val summary = Metrics (
@@ -190,11 +189,15 @@ class MetricsApplicationService {
              endTimeMillis
         )
 
-        val details = timeRangeByUnit.map {
-            val valueForUnitRange = calculator.calculateValue(allBuilds, it.first, it.second, type)
-            Metrics(valueForUnitRange, it.first, it.second)
-        }.filter { metrics -> metrics.value != 0.0 }
+        val metricsList: MutableList<Metrics> = mutableListOf()
 
-        return MetricsInfo(summary, details)
+        timeRangeByUnit.forEach {
+            val valueForUnitRange = calculator.calculateValue(allBuilds, it.first, it.second, type)
+            if(!valueForUnitRange.toDouble().isNaN()) {
+                metricsList.add(Metrics(valueForUnitRange, it.first, it.second))
+            }
+        }
+
+        return MetricsInfo(summary, metricsList)
     }
 }

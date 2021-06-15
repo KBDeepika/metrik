@@ -16,11 +16,9 @@ class CoverageReportCalculator {
       val buildOrderByTimestampAscending = filteredBuildsInGivenTimeRange.sortedBy { build -> build.timestamp }
       if (buildOrderByTimestampAscending.isNotEmpty()) {
         val latestBuild = buildOrderByTimestampAscending.last()
-        if(latestBuild.coverageDetails.isNotEmpty()){
-          val coverageSummary = Klaxon().parse<CoverageSummary>(latestBuild.coverageDetails)!!
-          value += coverageSummary.results.elements.find { x -> x.name == type }!!.ratio
-          count++
-        }
+        val coverageSummary = Klaxon().parse<CoverageSummary>(latestBuild.coverageDetails)!!
+        value += coverageSummary.results.elements.find { x -> x.name == type }!!.ratio
+        count++
       }
     }
     return divide(value, count);
@@ -47,13 +45,13 @@ class CoverageReportCalculator {
 
   private fun getSucceedBuildsUnderTimeRange(pipeLineBuilds : Map.Entry<String, List<Build>>, startTimestamp: Long, endTimestamp: Long) : List<Build>{
     return pipeLineBuilds.value.filter {
-      build -> (build.timestamp in startTimestamp..endTimestamp) && (build.result == Status.SUCCESS)
+      build -> (build.timestamp in startTimestamp..endTimestamp) && (build.result == Status.SUCCESS) && (build.coverageDetails.isNotEmpty())
     }
   }
 
   private fun divide(numerator : Double, denominator : Int) : Number {
     val div = numerator.div(denominator)
-    if(div.isNaN()) return 0.0
+    if(div.isNaN()) return div
     return div.toBigDecimal().setScale(2, RoundingMode.HALF_UP)
   }
 }
