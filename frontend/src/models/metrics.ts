@@ -17,7 +17,6 @@ export enum MetricsLevel {
 export enum MetricsUnit {
 	FORTNIGHTLY = "Fortnightly",
 	MONTHLY = "Monthly",
-	DAILY = "Daily",
 }
 
 export type MetricType = "df" | "lt" | "mttr" | "cfr" | "ltcr";

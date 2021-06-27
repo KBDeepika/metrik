@@ -1,16 +1,16 @@
-import React, {useState} from "react";
-import {Col, Row} from "antd";
-import {css} from "@emotion/react";
-import {useQuery} from "../../hooks/useQuery";
-import {getDurationTimestamps} from "../../utils/timeFormats/timeFormats";
-import {MetricsCard} from "./components/MetricsCard";
-import {DashboardTopPanel, FormValues} from "./components/DashboardTopPanel";
-import {BACKGROUND_COLOR} from "../../constants/styles";
-import {MetricTooltip} from "./components/MetricTooltip";
-import {calcMaxValueWithRatio} from "../../utils/calcMaxValueWithRatio/calcMaxValueWithRatio";
-import {cleanMetricsInfo} from "../../utils/metricsDataUtils/metricsDataUtils";
-import {FourKeyMetrics, getFourKeyMetricsUsingPost} from "../../clients/metricsApis";
-import {MetricsInfo, MetricsLevel, MetricsUnit} from "../../models/metrics";
+import React, { useState } from "react";
+import { Col, Row } from "antd";
+import { css } from "@emotion/react";
+import { useQuery } from "../../hooks/useQuery";
+import { getDurationTimestamps } from "../../utils/timeFormats/timeFormats";
+import { MetricsCard } from "./components/MetricsCard";
+import { DashboardTopPanel, FormValues } from "./components/DashboardTopPanel";
+import { BACKGROUND_COLOR } from "../../constants/styles";
+import { MetricTooltip } from "./components/MetricTooltip";
+import { calcMaxValueWithRatio } from "../../utils/calcMaxValueWithRatio/calcMaxValueWithRatio";
+import { cleanMetricsInfo } from "../../utils/metricsDataUtils/metricsDataUtils";
+import { FourKeyMetrics, getFourKeyMetricsUsingPost } from "../../clients/metricsApis";
+import { MetricsInfo, MetricsLevel, MetricsUnit } from "../../models/metrics";
 
 const metricsContainerStyles = css({
 	padding: "37px 35px",
@@ -178,7 +178,7 @@ export const PageDashboard = () => {
 					<Col xs={24} sm={24} md={24} lg={24}>
 						<MetricsCard
 							title="Test Coverage Report (Lines)"
-							info={<MetricTooltip unit={MetricsUnit.DAILY} type={"ltcr"} />}
+							info={<MetricTooltip unit={appliedUnit} type={"ltcr"} />}
 							summary={linesCoverageReport.summary}
 							data={linesCoverageReport.details}
 							yaxisFormatter={(value: string) => value + "%"}
